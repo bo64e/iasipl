@@ -1,11 +1,14 @@
-import os
-
-
-
-for root, dirs, files in os.walk("."):
-    for file in files:
-        # with open(os.path.join(root, file), "r", encoding='utf-8') as f:
-            if file.endswith('.html'):
-                os.mkdir(os.path.join(root, file.replace('.html', '')))
-                #put the file in the new directory but acutally
-                os.rename(os.path.join(root, file), os.path.join(root, file.replace('.html', ''), file))
+import os,json
+season = 0
+for ssn in os.listdir(".\\src\\sns"):
+    season += 1
+    episode = 0
+    for ep in os.listdir(os.path.join(".\\src\\sns",ssn)):
+        episode += 1
+        with open(os.path.join(".\\src\\sns",ssn,ep,ep+".json"),"r",encoding='utf-8') as f:
+            j = json.loads(f.read())
+            j['id'] = f"{season:02}{episode:02}"
+            jse = json.dumps(j,indent=2)
+            print(jse)
+        with open(os.path.join(".\\src\\sns",ssn,ep,ep+".json"),"w",encoding='utf-8') as fw:
+            fw.write(jse)

@@ -1,7 +1,7 @@
 import msvcrt
 import os,random, keyboard, re
 import time
-import shutil,curses
+import shutil
 import traceback
 
 terminal_size = shutil.get_terminal_size()
@@ -12,6 +12,7 @@ def brak(input_string):
 def display(arr):
     script = arr[0]
     name = arr[1]
+    print(arr[1])
     start = random.randint(0,len(script)-1)
     s = script[start]+"\n"#.ljust(terminal_size.columns," ")+"\n"
     f = 0
@@ -40,6 +41,7 @@ def display(arr):
                     break
         except KeyboardInterrupt:
             break
+    print()
     print(name)
     while msvcrt.kbhit():
         msvcrt.getch()
@@ -53,7 +55,10 @@ for root, dirs, files in os.walk("."):
             continue
         with open(os.path.join(root,i),"r", encoding='utf-8') as f:
             red = "".join([i+"\n" for i in f.read().splitlines() if i.strip() != ""])
-        a.append([red.splitlines(), (root[2:]+" "+i.replace(".html",""))])
+        path = os.path.normpath(os.path.join(root,i))
+        print()
+        #a.append([red.splitlines(), (root[2:]+" "+i.replace(".html",""))])
+        a.append([red.splitlines(), "".join(os.path.normpath(os.path.join(root,i)).split(os.sep)[-4:-2])])
 random.shuffle(a)
 
 while True:
@@ -63,7 +68,3 @@ while True:
         traceback.print_exc()
         input()
         break
-
-
-
-curses.endwin()
