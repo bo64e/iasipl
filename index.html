@@ -1,77 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>poo</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Poo</title>
+  <link rel="stylesheet" href="static/styles.css" />
+  <script src="static/index.js" defer></script>
 </head>
 <body>
-    <script src="index.js"></script>
-    <nav>
-        <a href="#">Thing1</a>
-        <a href="#">Thing2</a>
-        <a href="#">Thing3</a>
-    </nav>
-    <div id="game-container">
-        <div id="score">Score: 1000</div>
-        <div id="line-wrapper">
-            <div id="line-container">
-                <div>text 1</div>
-            </div>
-            <div id="arrows">
-                <div class="arrow"><img src="./src/imgs/up.svg" alt="Up" onclick="viewup()"></div>
-                <div class="arrow"><img src="./src/imgs/down.svg" alt="Down" onclick="viewdown()" ></div>
-            </div>
+  <div class="container">
+    <h1 class="title">Quiz</h1>
+    
+    <div class="game-stats">
+        <div class="score">Score: 1000</div>
+        <div class="lives">
+          <img src="static/src/imgs/heart_full.svg" alt="Heart" />
+          <img src="static/src/imgs/heart_full.svg" alt="Heart" />
+          <img src="static/src/imgs/heart_full.svg" alt="Heart" />
         </div>
-        <div id="input-container">
-            <input type="text" placeholder="The user can type here...">
+    </div>
+
+
+    <div class="options-wrapper">
+
+        <div class="options-container">
+          <div class="options">
+            <!-- <div class="option-box" id="first">First!</div> -->
+          </div>
         </div>
-        <div id="episode-list">
-            <div class="episode">
-                <img src="your-placeholder-image.png" alt="Episode Image">
-                <div>
-                    <div class="title">S15 E08 The Gang Carries a Corpse Up a Mountain</div>
-                    <div class="description">The Gang attempts to ascend a mountain in order for Charlie to fulfill an old and mysterious Irish burial tradition...</div>
-                </div>
-            </div>
-            <div class="episode">
-                <img src="your-placeholder-image.png" alt="Episode Image">
-                <div>
-                    <div class="title">S03 E04 The Gang Gets Held Hostage</div>
-                    <div class="description">The McPoyle brothers and sister Margaret take the gang hostage at Paddy's, raising the stakes in a new level of their feud...</div>
-                </div>
-            </div>
-            <div class="episode">
-                <img src="your-placeholder-image.png" alt="Episode Image">
-                <div>
-                    <div class="title">S01 E05 Gun Fever</div>
-                    <div class="description">When Paddy's gets robbed, the gang decides to purchase a gun with way too many issues...</div>
-                </div>
-            </div>
-            <div class="episode">
-                <img src="your-placeholder-image.png" alt="Episode Image">
-                <div>
-                    <div class="title">S01 E05 Gun Fever</div>
-                    <div class="description">When Paddy's gets robbed, the gang decides to purchase a gun with way too many issues...</div>
-                </div>
-            </div>
-            <div class="episode">
-                <img src="your-placeholder-image.png" alt="Episode Image">
-                <div>
-                    <div class="title">S01 E05 Gun Fever</div>
-                    <div class="description">When Paddy's gets robbed, the gang decides to purchase a gun with way too many issues...</div>
-                </div>
-            </div>
-            <div class="episode">
-                <img src="your-placeholder-image.png" alt="Episode Image">
-                <div>
-                    <div class="title">S01 E05 Gun Fever</div>
-                    <div class="description">When Paddy's gets robbed, the gang decides to purchase a gun with way too many issues...</div>
-                </div>
-            </div>
+
+        <div class="option-buttons">
+          <button onclick="AddUp()"><img src="static/src/imgs/up.svg" alt="Up" /></button>
+          <button onclick="AddDown()"><img src="static/src/imgs/down.svg" alt="Down" /></button>
         </div>
-        <button id="submit-btn">Submit</button>
+    </div>
+
+    <div class="input-area">
+        <div class="input-form">
+          <input type="text" placeholder="Enter an episode..." />
+          <button class="submit-btn"><b>SUBMIT</b></button>
+        </div>
     </div>
 </body>
 </html>
