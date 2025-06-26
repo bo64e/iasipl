@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Poo</title>
   <link rel="stylesheet" href="static/styles.css" />
-  <script src="static/index.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -37,47 +36,21 @@
 
     <div class="input-area">
         <div class="input-form">
-          <input type="text" placeholder="Enter an episode..." />
+          <input id="search" type="text" placeholder="Enter an episode..." />
           <button class="submit-btn"><b>SUBMIT</b></button>
         </div>
     </div>
   <div class="search-results">
     <div class="search-result">
-      <img src="https://m.media-amazon.com/images/M/MV5BMTQ3Mzc5Mjg0OF5BMl5BanBnXkFtZTgwMjU2MzM0MjE@._V1_QL75_UX500_CR0,47,500,281_.jpg" alt="Episode Thumbnail" />
+      <img src="https://m.media-amazon.com/images/M/MV5BMTQ3Mzc5Mjg0OF5BMl5BanBnXkFtZTgwMjU2MzM0MjE@._V1_QL75_UX500_CR0,47,500,281_.jpg" />
       <div class="result-info">
         <div class="result-title">S01 E01 The Gang Gets Racist</div>
         <div class="result-subtitle">The gang attempts to open a bar with a progressive twist...</div>
       </div>
-    </div>
-        <div class="search-result">
-      <img src="https://m.media-amazon.com/images/M/MV5BMTQ3Mzc5Mjg0OF5BMl5BanBnXkFtZTgwMjU2MzM0MjE@._V1_QL75_UX500_CR0,47,500,281_.jpg" alt="Episode Thumbnail" />
-      <div class="result-info">
-        <div class="result-title">S01 E01 The Gang Gets Racist</div>
-        <div class="result-subtitle">The gang attempts to open a bar with a progressive twist...</div>
-      </div>
-    </div>
-        <div class="search-result">
-      <img src="https://m.media-amazon.com/images/M/MV5BMTQ3Mzc5Mjg0OF5BMl5BanBnXkFtZTgwMjU2MzM0MjE@._V1_QL75_UX500_CR0,47,500,281_.jpg" alt="Episode Thumbnail" />
-      <div class="result-info">
-        <div class="result-title">S01 E01 The Gang Gets Racist</div>
-        <div class="result-subtitle">The gang attempts to open a bar with a progressive twist...</div>
-      </div>
-    </div>
-        <div class="search-result">
-      <img src="https://m.media-amazon.com/images/M/MV5BMTQ3Mzc5Mjg0OF5BMl5BanBnXkFtZTgwMjU2MzM0MjE@._V1_QL75_UX500_CR0,47,500,281_.jpg" alt="Episode Thumbnail" />
-      <div class="result-info">
-        <div class="result-title">S01 E01 The Gang Gets Racist</div>
-        <div class="result-subtitle">The gang attempts to open a bar with a progressive twist...</div>
-      </div>
-    </div>
-        <div class="search-result">
-      <img src="https://m.media-amazon.com/images/M/MV5BMTQ3Mzc5Mjg0OF5BMl5BanBnXkFtZTgwMjU2MzM0MjE@._V1_QL75_UX500_CR0,47,500,281_.jpg" alt="Episode Thumbnail" />
-      <div class="result-info">
-        <div class="result-title">S01 E01 The Gang Gets Racist</div>
-        <div class="result-subtitle">The gang attempts to open a bar with a progressive twist...</div>
-      </div>
-    </div>
-    <!-- More results go here -->
   </div>
+
+  
+  <script src="static/index.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0"></script>
 </body>
 </html>

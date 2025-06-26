@@ -50,6 +50,23 @@ def get_script():
     except Exception as e:
         abort(500, description=str(e))
 
+@app.route('/get-info', methods=['GET'])
+def get_info():
+    try:
+        jso = []
+        for ssn in os.listdir(".\\static\\src\\sns"):
+            for ep in os.listdir(os.path.join(".\\static\\src\\sns",ssn)):
+                with open(os.path.join(".\\static\\src\\sns",ssn,ep,ep+".json"),"r",encoding='utf-8') as f:
+                    j = json.load(f)
+                    j['title'] = ssn+ep
+                    jso.append(j)
+        else:
+            return Response(json.dumps(jso), mimetype='text/plain')
+    except FileNotFoundError:
+        abort(404, description="File not found")
+    except Exception as e:
+        abort(500, description=str(e))
+
 
 @app.route('/')
 def index():
