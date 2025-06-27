@@ -1,5 +1,7 @@
 var score = 1000;
 
+
+document.getElementById("sortDropdown").value = "relevance";
 document.getElementById("search").value = "";
 document.getElementsByClassName("search-results")[0].innerHTML = "";
 script = []
@@ -56,7 +58,7 @@ async function LoadScript() {
     fuse = new Fuse(info, {
         keys: ['title'],
         threshold: 0.4,
-    })
+    });
 }
 
 
@@ -143,6 +145,8 @@ function Enter(){
         if (info[i]['title'].toLowerCase() === attempt.toLowerCase()) {
             if (info[i]['id'] === scriptid) {
                 alert("You already have this script loaded!");
+                Win();
+                return;
             }
             else if (!guessedIDs.includes(info[i]['id'])) {
                 lost = false;
@@ -164,9 +168,13 @@ function Win(){
 
 }
 
-function BuildResults(query){
+function BuildResults(query, sorted = false) {
     document.getElementsByClassName("search-results")[0].innerHTML = "";
     const results = fuse.search(query);
+
+    if (sorted) {
+        results.sort((a,b) => a.item['title'].localeCompare(b.item['title']));
+    }
 
     for(let i = 0; (i < results.length && i < 20); i++) {
         document.getElementsByClassName("search-results")[0].appendChild(MakeResult(results[i].item));
@@ -189,12 +197,22 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-document.getElementById("search").addEventListener('input', () => {BuildResults(document.getElementById("search").value)});
-    // // document.getElementsByClassName("search-results")[0].innerHTML = "";
-    // // const query = document.getElementById("search").value;
-    // // const results = fuse.search(query);
+document.getElementById("search").addEventListener('input', () => {
+    if (document.getElementById("sortDropdown").value === "relevance") {
+        BuildResults(document.getElementById("search").value, false);
+    }
+    else if (document.getElementById("sortDropdown").value === "alphabetically") {
+        BuildResults(document.getElementById("search").value, true);
+    }
+    
+});
 
-    // // for(let i = 0; (i < results.length && i < 20); i++) {
-    // //     document.getElementsByClassName("search-results")[0].appendChild(MakeResult(results[i].item));
-    // // }
-    // });
+document.getElementById("sortDropdown").addEventListener('change', () => {
+    if (document.getElementById("sortDropdown").value === "relevance") {
+        BuildResults(document.getElementById("search").value, false);
+    }
+    else if (document.getElementById("sortDropdown").value === "alphabetically") {
+        BuildResults(document.getElementById("search").value, true);
+    }
+    
+});
