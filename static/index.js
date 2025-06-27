@@ -4,8 +4,10 @@ document.getElementById("search").value = "";
 document.getElementsByClassName("search-results")[0].innerHTML = "";
 script = []
 info = []
+scriptid = "";
 startindex = -1;
 offsets = [-1,-1]
+guessedIDs = [];
 LoadScript();
 fuse = null;
 
@@ -42,6 +44,7 @@ async function GetInfo(){
 
 async function LoadScript() {
     const id = await GetID();
+    scriptid = id;
     script = (await GetScript(id)).split('\n');
     startindex = Math.floor(Math.random() * script.length);
     offsets = [startindex,startindex]
@@ -61,7 +64,7 @@ async function LoadScript() {
 async function AddUp(){
     if (offsets[0] > 0){
         offsets[0]--;
-        score -= 100;
+        score -= 50;
         option = MakeOption();
         option.innerHTML = script[offsets[0]];
         document.getElementsByClassName("options")[0].prepend(option);
@@ -73,7 +76,7 @@ async function AddUp(){
 function AddDown(){
     if (offsets[1] < script.length - 1){ 
         offsets[1]++;
-        score -= 100;
+        score -= 50;
         option = MakeOption();
         option.innerHTML = script[offsets[1]];
         document.getElementsByClassName("options")[0].appendChild(option);
@@ -109,10 +112,71 @@ function MakeResult(item){
     subtitle.textContent = item['plot'];
     info.appendChild(subtitle);
     newResult.appendChild(info);
+    newResult.onclick = function() {document.getElementById("search").value = item['title'];}
 
+    if (guessedIDs.includes(item['id'])) {
+        console.log("Already guessed: " + item['title']);
+        newResult.style.backgroundColor = "#663333";
+    }
 
     return newResult;
 }
+
+function ColourResults() {
+    const results = document.getElementsByClassName("search-result");
+    for (let i = 0; i < results.length; i++) {
+        const title = results[i].getElementsByClassName("result-title")[0].textContent;
+        for (let j = 0; j < info.length; j++) {
+            if (info[j]['title'].toLowerCase() === title.toLowerCase()) {
+                if (guessedIDs.includes(info[j]['id'])) {
+                    results[i].style.backgroundColor = "#663333";
+                }
+            }
+        }
+    }
+}
+
+
+function Enter(){
+    var attempt = document.getElementById("search").value;
+    for (let i = 0; i < info.length; i++) {
+        if (info[i]['title'].toLowerCase() === attempt.toLowerCase()) {
+            if (info[i]['id'] === scriptid) {
+                alert("You already have this script loaded!");
+            }
+            else if (!guessedIDs.includes(info[i]['id'])) {
+                lost = false;
+                hearts = document.getElementsByClassName("heart")
+                for (let j = 0; j < hearts.length; j++) {
+                    if (hearts[j].src.endsWith("static/src/imgs/heart_full.svg") && !lost){
+                        hearts[j].src = "static/src/imgs/heart_empty.svg";
+                        lost = true;
+                    }
+                }
+                guessedIDs.push(info[i]['id']);
+                ColourResults();
+            }
+        }
+    }
+}
+
+function Win(){
+
+}
+
+function BuildResults(query){
+    document.getElementsByClassName("search-results")[0].innerHTML = "";
+    const results = fuse.search(query);
+
+    for(let i = 0; (i < results.length && i < 20); i++) {
+        document.getElementsByClassName("search-results")[0].appendChild(MakeResult(results[i].item));
+    }
+    document.getElementsByClassName("search-results")[0].scrollTop = 0;
+}
+
+
+
+
 
 document.addEventListener('keydown', function(event) {
   if (event.key === 'ArrowUp') {
@@ -125,12 +189,12 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-document.getElementById("search").addEventListener('input', () => {
-    document.getElementsByClassName("search-results")[0].innerHTML = "";
-    const query = document.getElementById("search").value;
-    const results = fuse.search(query);
+document.getElementById("search").addEventListener('input', () => {BuildResults(document.getElementById("search").value)});
+    // // document.getElementsByClassName("search-results")[0].innerHTML = "";
+    // // const query = document.getElementById("search").value;
+    // // const results = fuse.search(query);
 
-    for(let i = 0; (i < results.length && i < 20); i++) {
-        document.getElementsByClassName("search-results")[0].appendChild(MakeResult(results[i].item));
-    }
-    });
+    // // for(let i = 0; (i < results.length && i < 20); i++) {
+    // //     document.getElementsByClassName("search-results")[0].appendChild(MakeResult(results[i].item));
+    // // }
+    // });

@@ -28,7 +28,6 @@ def get_script():
     id = request.args.get('id')
     if not id:
          return "No ID", 400
-    print(id)
     try:
         contents = ""
         for ssn in os.listdir(".\\static\\src\\sns"):
@@ -37,9 +36,7 @@ def get_script():
                     j = json.loads(f.read())
                     if contents == "" and j['id'] == id:
                         with open(os.path.join(".\\static\\src\\sns",ssn,ep,ep,ep+".html"),"r",encoding='utf-8') as fr:
-                            print(os.path.join(".\\static\\src\\sns",ssn,ep,ep,ep+".html"))
                             contents = fr.read()
-                            print(contents)
                     elif contents != "" and j['id'] == id:
                         abort(500, description="Multiple IDs found")
         if contents == "":

@@ -167,15 +167,17 @@ body {
   border: 2px solid transparent;
   box-sizing: border-box;
   display: flex;
-  background-color: #333;
+  background-color: #333333;
   border-radius: 6px;
   gap: 12px;
   align-items: flex-start;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .search-result:hover {
-  border: 2px solid grey;
+  background-color: #443333;
+  border: 2px solid #808080;
 }
 
 .search-result img {
