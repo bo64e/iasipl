@@ -1,6 +1,6 @@
 var score = 1000;
 
-
+ended = false;
 document.getElementById("sortDropdown").value = "relevance";
 document.getElementById("search").value = "";
 document.getElementsByClassName("search-results")[0].innerHTML = "";
@@ -140,22 +140,34 @@ function ColourResults() {
 
 
 function Enter(){
+    if (ended) {
+        for (let i = 0; i < info.length; i++) {
+            if (info[i]['id'] === scriptid) {
+                Win(info[i]);
+                return;
+            }
+        }
+        return;
+    }
     var attempt = document.getElementById("search").value;
     for (let i = 0; i < info.length; i++) {
         if (info[i]['title'].toLowerCase() === attempt.toLowerCase()) {
             if (info[i]['id'] === scriptid) {
-                alert("You already have this script loaded!");
-                Win();
+                Win(info[i]);
                 return;
             }
             else if (!guessedIDs.includes(info[i]['id'])) {
                 lost = false;
                 hearts = document.getElementsByClassName("heart")
-                for (let j = 0; j < hearts.length; j++) {
+                for (let j = 0; j < hearts.length-1; j++) {
                     if (hearts[j].src.endsWith("static/src/imgs/heart_full.svg") && !lost){
                         hearts[j].src = "static/src/imgs/heart_empty.svg";
                         lost = true;
                     }
+                }
+                if (!lost) {
+                    hearts[hearts.length-1].src = "static/src/imgs/heart_empty.svg";
+                    Lose(info[i]);
                 }
                 guessedIDs.push(info[i]['id']);
                 ColourResults();
@@ -164,9 +176,52 @@ function Enter(){
     }
 }
 
-function Win(){
-
+function Win(episode) {
+    document.getElementById("resultModal").querySelector(".modal-header").classList.add("success");
+    document.getElementById("modalStatus").textContent = "You Win!";
+    document.getElementById("scoreDisplay").textContent = score;
+    document.getElementById("livesLostDisplay").textContent = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;
+    document.getElementById("episodeTitle").textContent = episode['title'];
+    document.getElementById("episodeDesc").textContent = episode['plot'];
+    document.getElementById("episodeImg").src = episode['img'];
+    document.getElementById("resultModal").classList.remove("hidden");
+    document.getElementById("resultModal").scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    ended = true;
 }
+
+function Lose(episode) {
+    document.getElementById("resultModal").querySelector(".modal-header").classList.add("failure");
+    document.getElementById("modalStatus").textContent = "You Lose!";
+    document.getElementById("scoreDisplay").textContent = score;
+    document.getElementById("livesLostDisplay").textContent = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;
+    document.getElementById("episodeTitle").textContent = episode['title'];
+    document.getElementById("episodeDesc").textContent = episode['plot'];
+    document.getElementById("episodeImg").src = episode['img'];
+    document.getElementById("resultModal").classList.remove("hidden");
+    document.getElementById("resultModal").scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    ended = true;
+}
+
+
+function Copy(){
+    text = "I "
+    lives = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;``
+    if (lives > 0){
+        text += "won this piece of shit game with a score of " + score + "/1000 and " + lives + "/4 lives left.";
+    }
+    else {
+        text += "lost this piece of shit game with a score of " + score + ".";
+    }
+    navigator.clipboard.writeText(text);
+    document.getElementById("shareBtn").textContent = "Copied!"
+}
+
+function Back(){
+    document.getElementById("resultModal").classList.add("hidden");
+}
+
 
 function BuildResults(query, sorted = false) {
     document.getElementsByClassName("search-results")[0].innerHTML = "";
@@ -195,6 +250,9 @@ document.addEventListener('keydown', function(event) {
     event.preventDefault();
     AddDown();
   }
+  else if (event.key === 'Escape') {
+    document.getElementById("resultModal").classList.add("hidden");
+  }
 });
 
 document.getElementById("search").addEventListener('input', () => {
@@ -216,3 +274,5 @@ document.getElementById("sortDropdown").addEventListener('change', () => {
     }
     
 });
+
+
