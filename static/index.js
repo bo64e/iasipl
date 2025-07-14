@@ -1,5 +1,6 @@
 var score = 1000;
 
+time = 0;
 ended = false;
 document.getElementById("sortDropdown").value = "relevance";
 document.getElementById("search").value = "";
@@ -13,6 +14,19 @@ guessedIDs = [];
 LoadScript();
 fuse = null;
 
+function IntToTimeString(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
+setInterval(() => {
+    if (!ended) {
+        time++;
+        document.getElementsByClassName("time")[0].innerHTML = IntToTimeString(time);
+    }
+}, 1000);
+
+
 async function GetID() {
     const response = await fetch('/get-id');
 
@@ -21,7 +35,7 @@ async function GetID() {
     }
 
     const id = await response.text();
-    console.log("Got ID: " + id);
+    //console.log("Got ID: " + id);
     return id;
 }
 
@@ -50,7 +64,7 @@ async function LoadScript() {
     script = (await GetScript(id)).split('\n');
     startindex = Math.floor(Math.random() * script.length);
     offsets = [startindex,startindex]
-    console.log(script[startindex]);
+    //console.log(script[startindex]);
     option = MakeOption(true);
     option.innerHTML = script[startindex];
     document.getElementsByClassName("options")[0].appendChild(option);
@@ -66,7 +80,7 @@ async function LoadScript() {
 async function AddUp(){
     if (offsets[0] > 0){
         offsets[0]--;
-        score -= 50;
+        if (!ended){score -= 50;}
         option = MakeOption();
         option.innerHTML = script[offsets[0]];
         document.getElementsByClassName("options")[0].prepend(option);
@@ -78,7 +92,7 @@ async function AddUp(){
 function AddDown(){
     if (offsets[1] < script.length - 1){ 
         offsets[1]++;
-        score -= 50;
+        if (!ended){score -= 50;}
         option = MakeOption();
         option.innerHTML = script[offsets[1]];
         document.getElementsByClassName("options")[0].appendChild(option);
@@ -117,7 +131,7 @@ function MakeResult(item){
     newResult.onclick = function() {document.getElementById("search").value = item['title'];}
 
     if (guessedIDs.includes(item['id'])) {
-        console.log("Already guessed: " + item['title']);
+        //console.log("Already guessed: " + item['title']);
         newResult.style.backgroundColor = "#663333";
     }
 
@@ -180,6 +194,7 @@ function Win(episode) {
     document.getElementById("resultModal").querySelector(".modal-header").classList.add("success");
     document.getElementById("modalStatus").textContent = "You Win!";
     document.getElementById("scoreDisplay").textContent = score;
+    document.getElementById("timeDisplay").textContent = IntToTimeString(time);
     document.getElementById("livesLostDisplay").textContent = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;
     document.getElementById("episodeTitle").textContent = episode['title'];
     document.getElementById("episodeDesc").textContent = episode['plot'];
@@ -194,6 +209,7 @@ function Lose(episode) {
     document.getElementById("resultModal").querySelector(".modal-header").classList.add("failure");
     document.getElementById("modalStatus").textContent = "You Lose!";
     document.getElementById("scoreDisplay").textContent = score;
+    document.getElementById("timeDisplay").textContent = IntToTimeString(time);
     document.getElementById("livesLostDisplay").textContent = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;
     document.getElementById("episodeTitle").textContent = episode['title'];
     document.getElementById("episodeDesc").textContent = episode['plot'];
@@ -209,10 +225,10 @@ function Copy(){
     text = "I "
     lives = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;``
     if (lives > 0){
-        text += "won this piece of shit game with a score of " + score + "/1000 and " + lives + "/4 lives left.";
+        text += "won this piece of shit game with a score of " + score + "/1000, with " + lives + "/4 lives left in a time of " + IntToTimeString(time);
     }
     else {
-        text += "lost this piece of shit game with a score of " + score + ".";
+        text += "lost this piece of shit game with a score of " + score + "/1000 in a time of " + IntToTimeString(time);;
     }
     navigator.clipboard.writeText(text);
     document.getElementById("shareBtn").textContent = "Copied!"

@@ -30,6 +30,11 @@ body {
   color: white;
 }
 
+.time {
+  font-size: 20px;
+  color: white;
+}
+
 .lives img {
   width: 24px;
   height: 24px;
