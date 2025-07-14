@@ -225,9 +225,10 @@ function Back(){
 
 function BuildResults(query, sorted = false) {
     document.getElementsByClassName("search-results")[0].innerHTML = "";
-    const results = fuse.search(query);
+    results = fuse.search(query);
 
     if (sorted) {
+        results = Array.from(results).slice(0,20);
         results.sort((a,b) => a.item['title'].localeCompare(b.item['title']));
     }
 
