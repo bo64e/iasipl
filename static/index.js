@@ -208,9 +208,9 @@ function Win(episode) {
 function Lose(episode) {
     document.getElementById("resultModal").querySelector(".modal-header").classList.add("failure");
     document.getElementById("modalStatus").textContent = "You Lose!";
-    document.getElementById("scoreDisplay").textContent = score;
+    document.getElementById("scoreDisplay").parentElement.textContent = "";
     document.getElementById("timeDisplay").textContent = IntToTimeString(time);
-    document.getElementById("livesLostDisplay").textContent = Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;
+    document.getElementById("livesLostDisplay").parentElement.textContent = "";//Array.from(document.getElementsByClassName("heart")).filter(h => h.src.endsWith("static/src/imgs/heart_full.svg")).length;
     document.getElementById("episodeTitle").textContent = episode['title'];
     document.getElementById("episodeDesc").textContent = episode['plot'];
     document.getElementById("episodeImg").src = episode['img'];
@@ -228,7 +228,7 @@ function Copy(){
         text += "won this piece of shit game with a score of " + score + "/1000, with " + lives + "/4 lives left in a time of " + IntToTimeString(time);
     }
     else {
-        text += "lost this piece of shit game with a score of " + score + "/1000 in a time of " + IntToTimeString(time);;
+        text += "lost this piece of shit game in a time of " + IntToTimeString(time);;
     }
     navigator.clipboard.writeText(text);
     document.getElementById("shareBtn").textContent = "Copied!"
